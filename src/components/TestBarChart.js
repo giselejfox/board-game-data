@@ -6,7 +6,7 @@ import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Toolti
 // Register the required chart components
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-export default function TestBarChart({ rawData, gameTitle }) {
+export default function TestBarChart({ rawData, gameTitle, selectedGame }) {
     const [chartData, setChartData] = useState({})
     
     // Function to process data and calculate win percentage for Bananagrams
@@ -68,7 +68,7 @@ export default function TestBarChart({ rawData, gameTitle }) {
             });
         }
 
-    }, [rawData])
+    }, [rawData, gameTitle])
 
     // Prepare data for the bar chart
     const data = {
