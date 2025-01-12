@@ -1,6 +1,8 @@
 'use client'
 
 import { useEffect, useState } from "react";
+import { Container } from "react-bootstrap";
+import TestBarChart from "../components/TestBarChart";
 
 export default function Home() {
 
@@ -25,8 +27,8 @@ export default function Home() {
   }, [])
 
   return (
-    <div>
-      {gameData.map((game, index) => <div key={index}>{game.date}</div>)}
-    </div>
+    <Container>
+      <TestBarChart rawData={gameData}/>
+    </Container>
   );
 }
