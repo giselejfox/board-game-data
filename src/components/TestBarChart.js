@@ -7,10 +7,10 @@ import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Toolti
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 export default function TestBarChart({ rawData, gameTitle }) {
-    const [bananagramsData, setBanagramsData] = useState({})
+    const [chartData, setChartData] = useState({})
     
     // Function to process data and calculate win percentage for Bananagrams
-    function getBananagramsWinPercentage(rawData) {
+    function getWinData(rawData) {
         const playerStats = {};
 
         rawData.forEach(game => {
@@ -31,37 +31,52 @@ export default function TestBarChart({ rawData, gameTitle }) {
         });
 
         // Calculate win percentage for each player
-        const winPercentage = {};
+        const winData = {};
         for (const player in playerStats) {
             const { wins, totalGames } = playerStats[player];
-            winPercentage[player] = (wins / totalGames) * 100; // Calculate the percentage
+            winData[player] = {
+                wins: wins,
+                totalGames: totalGames,
+                winPercentage: (wins / totalGames) * 100 // Calculate the percentage
+            }
         }
 
-        return winPercentage;
+        return winData;
     }
 
     useEffect(() => {
-        const winPercentage = getBananagramsWinPercentage(rawData);
+        const winData = getWinData(rawData);
 
-        // Sort the players by win percentage in descending order
-        const sortedPlayers = Object.keys(winPercentage).sort((a, b) => winPercentage[b] - winPercentage[a]);
+        if (Object.keys(winData).length !== 0) {
+            
+            // Filter players who have played at least 5 games
+            const filteredPlayers = Object.keys(winData).filter(player => {
+                console.log(player, winData[player].totalGames)
+                return winData[player].totalGames >= 5
+            });
 
-        // Create sorted data for chart
-        const sortedData = sortedPlayers.map(player => winPercentage[player]);
+            // Sort the players by win percentage in descending order
+            const sortedPlayers = filteredPlayers.sort((a, b) => winData[b].winPercentage - winData[a].winPercentage);
+    
+            // Create sorted data for chart
+            const sortedData = sortedPlayers.map(player => winData[player].winPercentage);
+    
+            setChartData({
+                players: sortedPlayers,
+                data: sortedData,
+                winData: winData, // Store the detailed win data for tooltips
+            });
+        }
 
-        setBanagramsData({
-            players: sortedPlayers,
-            data: sortedData,
-        });
     }, [rawData])
 
     // Prepare data for the bar chart
     const data = {
-        labels: bananagramsData.players, // Player names
+        labels: chartData.players, // Player names
         datasets: [
             {
                 label: `${gameTitle} Win Percentage`,
-                data: bananagramsData.data, // Number of wins for each player
+                data: chartData.data, // Number of wins for each player
                 backgroundColor: 'rgba(75, 192, 192, 0.2)', // Bar color
                 borderColor: 'rgba(75, 192, 192, 1)',
                 borderWidth: 1
@@ -79,6 +94,17 @@ export default function TestBarChart({ rawData, gameTitle }) {
             title: {
                 display: true,
                 text: `${gameTitle} Win Percentage by Player`
+            },
+            tooltip: {
+                callbacks: {
+                    label: function(tooltipItem) {
+                        const player = tooltipItem.label;
+                        const winData = chartData.winData[player]; // Get the win data for the player
+                        const winPercentage = winData.winPercentage.toFixed(2); // Format win percentage
+                        const totalGames = winData.totalGames;
+                        return `${winPercentage}% wins | ${totalGames} games played`;
+                    }
+                }
             }
         },
         scales: {
@@ -91,6 +117,7 @@ export default function TestBarChart({ rawData, gameTitle }) {
     return (
         <div>
             <Bar data={data} options={options} />
+            {/* <div>{JSON.stringify(chartData)}</div> */}
         </div>
     )
 };
