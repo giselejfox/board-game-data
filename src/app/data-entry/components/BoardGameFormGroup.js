@@ -85,7 +85,7 @@ export default function BoardGameFormGroup({ handleSetFormData, formData, allBoa
         <>
         {/* BoardGames */}
         <Form.Group className="mb-3" controlId="formBoardGames">
-            <Form.Label>BoardGames of the Game</Form.Label>
+            <Form.Label>Game Name</Form.Label>
             <Form.Control
                 type="text"
                 placeholder="Start typing to search for games"

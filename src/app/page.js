@@ -31,17 +31,15 @@ export default function Home() {
   }, [])
 
   return (
-    <Container className="mt-4">
-      {/* <div>{selectedGame}</div> */}
+    <Container className="mt-5">
       <Row>
-        <Col xs={2}>
+        <Col lg={2}>
           <Sidebar gameData={gameData} handleSetSelectedGame={handleSetSelectedGame} selectedGame={selectedGame} />
         </Col>
-        <Col xs={10}>
+        <Col lg={10}>
           <TestBarChart rawData={gameData} gameTitle={selectedGame}/>
         </Col>
       </Row>
-      <div>{JSON.stringify(gameData)}</div>
     </Container>
   );
 }

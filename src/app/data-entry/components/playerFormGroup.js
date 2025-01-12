@@ -84,7 +84,7 @@ export default function PlayerFormGroup({ handleSetFormData, formData, allPlayer
         <>
         {/* Players */}
         <Form.Group className="mb-3" controlId="formPlayers">
-            <Form.Label>Players of the Game</Form.Label>
+            <Form.Label>Players</Form.Label>
             <Form.Control
                 type="text"
                 placeholder="Start typing to search for players"

@@ -84,7 +84,7 @@ export default function WinnerFormGroup({ handleSetFormData, formData, allPlayer
         <>
         {/* Winners */}
         <Form.Group className="mb-3" controlId="formWinners">
-            <Form.Label>Winners of the Game</Form.Label>
+            <Form.Label>Winner(s)</Form.Label>
             <Form.Control
                 type="text"
                 placeholder="Start typing to search for winners"
