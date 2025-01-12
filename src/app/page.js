@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import TestBarChart from "../components/TestBarChart";
 import Sidebar from "@/components/Sidebar";
+import GamesList from "@/components/GamesList";
 
 export default function Home() {
 
@@ -40,6 +41,7 @@ export default function Home() {
           <TestBarChart rawData={gameData} gameTitle={selectedGame}/>
         </Col>
       </Row>
+      <GamesList gameData={gameData} selectedGame={selectedGame}/>
     </Container>
   );
 }

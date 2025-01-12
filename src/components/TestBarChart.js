@@ -102,7 +102,8 @@ export default function TestBarChart({ rawData, gameTitle, selectedGame }) {
                         const winData = chartData.winData[player]; // Get the win data for the player
                         const winPercentage = winData.winPercentage.toFixed(2); // Format win percentage
                         const totalGames = winData.totalGames;
-                        return `${winPercentage}% wins | ${totalGames} games played`;
+                        const totalWins = winData.wins
+                        return `${winPercentage}% wins | ${totalWins} wins out of ${totalGames} games`;
                     }
                 }
             }
