@@ -2,14 +2,11 @@
 import { useState } from "react";
 import { Form, Badge } from "react-bootstrap";
 
-export default function PlayerFormGroup({ handleSetFormData, formData }) {
+export default function PlayerFormGroup({ handleSetFormData, formData, allPlayers }) {
 
     // State for player input and dropdown
     const [playerInput, setPlayerInput] = useState("");
     const [filteredPlayers, setFilteredPlayers] = useState([]);
-
-    // Pre-determined player options
-    const allPlayers = ["Alice", "Bob", "Charlie", "David", "Emma", "Fiona", "George"];
 
     // Handle player input changes
     const handlePlayerInputChange = (e) => {

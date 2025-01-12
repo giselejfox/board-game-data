@@ -2,18 +2,23 @@
 
 import React, { useState } from "react";
 import { Container, Form, Button, Badge } from "react-bootstrap";
-import PlayerFormGroup from "./components/playerFormGroup";
+import PlayerFormGroup from "./components/PlayerFormGroup";
+import WinnerFormGroup from "./components/WinnerFormGroup";
+import BoardGameFormGroup from "./components/BoardGameFormGroup";
 
 export default function DataEntry() {
 
     // State to store form inputs
     const [formData, setFormData] = useState({
         date: "",
-        name: "",
         gameTitle: "",
         players: [],
         winners: [],
     });
+
+    // Pre-determined player options
+    const allPlayers = ["Liv Oomen", "Emily Oomen", "Sarah Klassen", "Noja Lajauskaitė", "Gisele Fox"];
+    const allBoardGames = ["Bananagrams", "Miles Borne", "Yahtzee", "Nusht/Farkle", "The Game"]
 
     // Handle input changes
     const handleChange = (e) => {
@@ -28,8 +33,28 @@ export default function DataEntry() {
     // Handle form submission
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log("Form Data Submitted:", formData);
+        console.log(formData)
+        addDataToDatabase()
         alert("Form submitted successfully!");
+    };
+
+    const addDataToDatabase = async () => {
+        const response = await fetch("/api/addGame", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                data: formData
+            }),
+        });
+      
+        const result = await response.json();
+        if (response.ok) {
+            console.log("Data added:", result);
+        } else {
+            console.error("Error:", result.error);
+        }
     };
 
     return (
@@ -41,42 +66,22 @@ export default function DataEntry() {
             <Form.Group className="mb-3" controlId="formDate">
                 <Form.Label>Date</Form.Label>
                 <Form.Control
-                type="date"
-                name="date"
-                value={formData.date}
-                onChange={handleChange}
-                required
+                    type="date"
+                    name="date"
+                    value={formData.date}
+                    onChange={handleChange}
+                    required
                 />
             </Form.Group>
     
             {/* Game Title */}
-            <Form.Group className="mb-3" controlId="formGameTitle">
-                <Form.Label>Title of the Game</Form.Label>
-                <Form.Control
-                type="text"
-                name="gameTitle"
-                placeholder="Enter the title of the game"
-                value={formData.gameTitle}
-                onChange={handleChange}
-                required
-                />
-            </Form.Group>
+            <BoardGameFormGroup handleSetFormData={handleSetFormData} formData={formData} allBoardGames={allBoardGames} />
     
             {/* Players */}
-            <PlayerFormGroup handleSetFormData={handleSetFormData} formData={formData} />
+            <PlayerFormGroup handleSetFormData={handleSetFormData} formData={formData} allPlayers={allPlayers} />
     
             {/* Winners */}
-            <Form.Group className="mb-3" controlId="formWinners">
-                <Form.Label>Winners of the Game</Form.Label>
-                <Form.Control
-                type="text"
-                name="winners"
-                placeholder="List the winners, separated by commas"
-                value={formData.winners}
-                onChange={handleChange}
-                required
-                />
-            </Form.Group>
+            <WinnerFormGroup  handleSetFormData={handleSetFormData} formData={formData} allPlayers={allPlayers} />
     
             {/* Submit Button */}
             <Button variant="primary" type="submit">
