@@ -6,7 +6,7 @@ import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Toolti
 // Register the required chart components
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-export default function TestBarChart({ rawData }) {
+export default function TestBarChart({ rawData, gameTitle }) {
     const [bananagramsData, setBanagramsData] = useState({})
     
     // Function to process data and calculate win percentage for Bananagrams
@@ -14,7 +14,7 @@ export default function TestBarChart({ rawData }) {
         const playerStats = {};
 
         rawData.forEach(game => {
-            if (game.gameTitle === "Bananagrams") {
+            if (game.gameTitle === gameTitle) {
                 game.players.forEach(player => {
                     if (!playerStats[player]) {
                         playerStats[player] = { wins: 0, totalGames: 0 };
@@ -59,13 +59,13 @@ export default function TestBarChart({ rawData }) {
     const data = {
         labels: bananagramsData.players, // Player names
         datasets: [
-        {
-            label: 'Bananagrams Win Percentage',
-            data: bananagramsData.data, // Number of wins for each player
-            backgroundColor: 'rgba(75, 192, 192, 0.2)', // Bar color
-            borderColor: 'rgba(75, 192, 192, 1)',
-            borderWidth: 1
-        }
+            {
+                label: `${gameTitle} Win Percentage`,
+                data: bananagramsData.data, // Number of wins for each player
+                backgroundColor: 'rgba(75, 192, 192, 0.2)', // Bar color
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }
         ]
     };
 
@@ -74,11 +74,11 @@ export default function TestBarChart({ rawData }) {
         responsive: true,
         plugins: {
             legend: {
-                position: 'top',
+                position: 'bottom',
             },
             title: {
                 display: true,
-                text: 'Bananagrams Wins by Player'
+                text: `${gameTitle} Win Percentage by Player`
             }
         },
         scales: {

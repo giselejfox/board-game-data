@@ -27,8 +27,8 @@ export default function Home() {
   }, [])
 
   return (
-    <Container>
-      <TestBarChart rawData={gameData}/>
+    <Container className="mt-4">
+      <TestBarChart rawData={gameData} gameTitle={"Nusht/Farkle"}/>
     </Container>
   );
 }
